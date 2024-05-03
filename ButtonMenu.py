@@ -4,34 +4,36 @@ class ButtonMenu(ct.CTk):
     def __init__(self):
         super().__init__()
 
-    def add_new_btn(self, menu_frame, text_con, row_num):
+    def place_buttons(self, parent_cont):
         self.button_add_user = ct.CTkButton(
-            menu_frame,
-            text = text_con,
-            #command = lambda btn_val = "Add": self.button_callback(btn_val),
-            # width=(self._window_width / 4),
-            # height=(self._window_height / 4),
+            parent_cont,
+            text = "Add New User",
+            command = lambda btn_val = "Add": self.button_callback(btn_val),
             )
-        self.button_add_user.grid(row = row_num, column = 0, padx = 10, pady = (5, 0), sticky = "nesw")
+        self.button_add_user.grid(row = 0, column = 0, padx = 10, pady = (5, 0))
 
-    # def edit_user(self, menu_frame)
-    #     self.button_edit_user = ct.CTkButton(
-    #         self.menu_frame,
-    #         text = "Edit User",
-    #         # command=,
-    #         # width=(self._window_width / 4),
-    #         # height=(self._window_height / 4),
-    #         )
-    #     self.button_edit_user.grid(row = 1, column = 0, padx = 10, pady = (5, 0), sticky = "nesw")
+        self.button_edit_user = ct.CTkButton(
+            parent_cont,
+            text = "Edit User",
+            command = lambda btn_val = "Edit": self.button_callback(btn_val),
+            )
+        self.button_edit_user.grid(row = 1, column = 0, padx = 10, pady = (5, 0))
 
-    #     self.button_disable_user = ct.CTkButton(
-    #         self.menu_frame,
-    #         text = "Disable User",
-    #         # command=,
-    #         # width=(self._window_width / 4),
-    #         # height=(self._window_height / 4),
-    #         )
-    #     self.button_disable_user.grid(row = 2, column = 0, padx = 10, pady = (5, 0), sticky = "nesw")
+        self.button_disable_user = ct.CTkButton(
+            parent_cont,
+            text = "Disable User",
+            command = lambda btn_val = "Disable": self.button_callback(btn_val),
+            )
+        self.button_disable_user.grid(row = 2, column = 0, padx = 10, pady = (5, 0))
+
+    def button_callback(self, btn_val):
+        match btn_val:
+            case "Add":
+                print("Add")
+            case "Edit":
+                print("Edit")
+            case "Disable":
+                print("Disable")
 
 
 # def main():
