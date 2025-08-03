@@ -48,25 +48,25 @@
 #             widget.destroy()
 
 from gui.views.add_user_form import AddUserForm
-from ad_functions.test import AdConnectorBaseClass
+from ad_functions.new_user_manager import NewUserManager
 
 class AddUserController:
     def __init__(self, parent_frame):
         self.parent_frame = parent_frame
-        self.user_manager = AdConnectorBaseClass()
+        self.new_user_manager = NewUserManager()
 
     def show_form(self):
         form = AddUserForm(self, self.parent_frame)
         form.grid(row=0, column=0, sticky="nsew")
 
     def get_organizational_units(self):
-        return self.user_manager.get_ous()
+        return self.new_user_manager.ous_list
 
     # def get_groups(self):
     #     return self.user_manager.get_all_groups()
 
     def create_user(self, username, password, ou_dn, group_dns):
-        return self.user_manager.create_user(username, password, ou_dn, group_dns)
+        return self.new_user_manager.create_user(username, password, ou_dn, group_dns)
 
 
 

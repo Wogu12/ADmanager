@@ -1,13 +1,14 @@
 from gui.views.base_form import BaseForm
 import customtkinter as ctk
+import string
 
 
 class AddUserForm(BaseForm):
     def __init__(self, controller, parent):
         super().__init__(parent)
 
-        self.controller = controller
-        self._ous = self.controller.get_organizational_units()
+        self._controller = controller
+        self._ous = self._controller.get_organizational_units()
 
         label = ctk.CTkLabel(self, text="Add New User", font=("Arial", 16))
         label.grid(row=0, column=0, columnspan=3, pady=10, sticky='ew')
@@ -41,20 +42,37 @@ class AddUserForm(BaseForm):
         self.dropdown_ou.grid(row=7, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
         ctk.CTkLabel(self, text="Grupy:").grid(row=8, column=0, sticky="w", padx=(20, 5), pady=5)
-        self.dropdown_group = ctk.CTkOptionMenu(self, values=["Użytkownicy", "Administratorzy", "Goście"])
+        self.dropdown_group = ctk.CTkOptionMenu(self, values=["test1", "Administratorzy", "Goście"])
         self.dropdown_group.grid(row=8, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        self.button_create = ctk.CTkButton(self, text="Dodaj użytkownika", command=self._on_create_user)
-        self.button_create.grid(row=9, column=0, columnspan=3, pady=10)
+        self.button_create = ctk.CTkButton(self, text="Dodaj użytkownika", command=self._create_user)
+        self.button_create.grid(row=9, column=0, columnspan=3, sticky='ew', pady=15)
 
-    def _on_create_user(self):
-        username = self.entry_login.get()
-        password = self.entry_passwd.get()
-        ou_dn = self.dropdown_ou.get()  # placeholder
-        group_dns = []  # placeholder
-        if self.controller.create_user(username, password, ou_dn, group_dns) is not None:
-            print('Nowy dodany z formularza')
-        else: 
-            print('')#dodac obsluge wyjatkow 
+    def _valid_passwd(self):
+        _passwd = self.entry_passwd.get()
+        _repeat_passwd = self.entry_repeat.get()
+
+        if len(_passwd < 8): #do zmiany na 12??????
+            return False
+        if _passwd != _repeat_passwd:
+            return False
+        
+        lower = any(sign.islower() for sign in _passwd)
+        upper = any(sign.isupper() for sign in _passwd)
+        number = any(sign.isdigit() for sign in _passwd)
+        spec_char = any(sign in string.punctuation for sign in _passwd)
+        
+        return all([lower, upper, number, spec_char])
+    
+    def _create_user(self):
+        if self._valid_passwd() and len(self.entry_login.get()) >= 4:
+            _username = self.entry_login.get()
+            _passwd = self.entry_passwd.get()
+            _ou = self.dropdown_ou.get()
+            group_dns = []  # placeholder
+            if self._controller.create_user(_username, _passwd, _ou, group_dns) is not None:
+                print('Nowy dodany z formularza')
+            else: 
+                print('')#dodac obsluge wyjatkow 
 
         
