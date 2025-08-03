@@ -1,0 +1,51 @@
+import customtkinter as ctk
+
+class ButtonLogic:
+    def __init__(self, content_frame, logger):
+        self._content_frame = content_frame
+        self._logger = logger
+
+    def test(self):
+        print('test')
+
+    def add_user(self):
+        self._logger.info("Add User clicked")
+        self._clear_frame()
+        label = ctk.CTkLabel(self._content_frame, text="Add New User", font=("Arial", 16))
+        label.grid(row=0, column=0, columnspan=2, pady=10)
+
+        # Pola formularza:
+        ctk.CTkLabel(self._content_frame, text="Username:").grid(row=1, column=0, sticky="e")
+        entry_username = ctk.CTkEntry(self._content_frame)
+        entry_username.grid(row=1, column=1, sticky="w")
+
+    def _button_callback(self, btn_val):
+        match btn_val:
+            case "Add":
+                print("Add")
+            case "Edit":
+                print("Edit")
+            case "Disable":
+                print("Disable")
+
+    def _clear_frame(self):
+        for widget in self._content_frame.winfo_children():
+            widget.destroy()
+
+
+# def main():
+#     app = ctk.CTk()
+
+
+#     def optionmenu_callback(choice):
+#         print("optionmenu dropdown clicked:", choice)
+
+#     optionmenu_var = ctk.StringVar(value="option 2")
+#     optionmenu = ctk.CTkOptionMenu(app,values=["option 1", "option 2"],
+#                                          command=optionmenu_callback,
+#                                          variable=optionmenu_var)
+
+#     app.mainloop()
+
+# if __name__ == "__main__":
+#     main()
