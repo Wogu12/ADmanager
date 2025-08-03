@@ -52,7 +52,7 @@ class AddUserForm(BaseForm):
         _passwd = self.entry_passwd.get()
         _repeat_passwd = self.entry_repeat.get()
 
-        if len(_passwd < 8): #do zmiany na 12??????
+        if len(_passwd) < 8: #do zmiany na 12??????
             return False
         if _passwd != _repeat_passwd:
             return False
@@ -74,5 +74,7 @@ class AddUserForm(BaseForm):
                 print('Nowy dodany z formularza')
             else: 
                 print('')#dodac obsluge wyjatkow 
+        else:
+            print('login lub haslo nie spelnia wymagan')
 
         
