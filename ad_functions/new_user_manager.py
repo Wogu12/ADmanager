@@ -1,7 +1,10 @@
+import re
+
 from pyad import *
 from pyad import aduser, adquery, adgroup
 from pyad.adcontainer import ADContainer
 from ad_functions.ad_connector_base_class import AdConnectorBaseClass
+from CTkMessagebox import CTkMessagebox
 
 class NewUserManager(AdConnectorBaseClass):
     def __init__(self):
@@ -11,7 +14,7 @@ class NewUserManager(AdConnectorBaseClass):
 
     def parse_ous(self):
         _parsed_ous = []
-        
+
         for item in self.raw_ous_list:
             _ou = item.split(',')[0]
             _ou = _ou[3:]
@@ -36,12 +39,19 @@ class NewUserManager(AdConnectorBaseClass):
 
         try:
             user = aduser.ADUser.create(username, _ou, password=password)
-            print('DODANO NOWEGO UZYTKOWNIKA')
             for group_dn in group_dns:
                 group = adgroup.from_dn(group_dn)
                 group.add_member(user)
+                
         except Exception as e:
-            print(f'ERROR: {e}')
+            _error_code = str(e).split(": ", 1)[0]
+            e = re.sub(r'^[^:]+:\s*', '', str(e))
+            if _error_code == '0x80071392':
+                CTkMessagebox(title="Błąd", message=e)
+            else:
+                CTkMessagebox(title="Błąd", message=e)
+                _user_to_delete = aduser.ADUser(distinguished_name=f'CN={username},{str(_full_ou)}')
+                _user_to_delete.delete()
 
         return user
 

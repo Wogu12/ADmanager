@@ -1,6 +1,7 @@
 from gui.views.base_form import BaseForm
 import customtkinter as ctk
 import string
+from CTkMessagebox import CTkMessagebox
 
 
 class AddUserForm(BaseForm):
@@ -52,29 +53,23 @@ class AddUserForm(BaseForm):
         _passwd = self.entry_passwd.get()
         _repeat_passwd = self.entry_repeat.get()
 
-        if len(_passwd) < 8: #do zmiany na 12??????
-            return False
         if _passwd != _repeat_passwd:
             return False
-        
-        lower = any(sign.islower() for sign in _passwd)
-        upper = any(sign.isupper() for sign in _passwd)
-        number = any(sign.isdigit() for sign in _passwd)
-        spec_char = any(sign in string.punctuation for sign in _passwd)
-        
-        return all([lower, upper, number, spec_char])
+        else:
+            return True 
     
     def _create_user(self):
-        if self._valid_passwd() and len(self.entry_login.get()) >= 4:
+        if self._valid_passwd():
             _username = self.entry_login.get()
             _passwd = self.entry_passwd.get()
             _ou = self.dropdown_ou.get()
             group_dns = []  # placeholder
             if self._controller.create_user(_username, _passwd, _ou, group_dns) is not None:
-                print('Nowy dodany z formularza')
+                CTkMessagebox(title="Błąd", message='Nowy użytkownik został pomyślnie dodany')
             else: 
                 print('')#dodac obsluge wyjatkow 
         else:
-            print('login lub haslo nie spelnia wymagan')
+            CTkMessagebox(title="Błąd", message='Login lub haslo nie spelnia wymagan')
+
 
         
