@@ -32,17 +32,26 @@ class NewUserManager(AdConnectorBaseClass):
 
         return _dict
     
-    def create_user(self, username, password, ou, group_dns):
+    def create_user(self, name, surname, job_title, mail, username, password, ou, group_dns):
         _full_ou = self._ous_dict.get(ou, None)
         _ou = ADContainer.from_dn(_full_ou)
         user = None
 
         try:
-            user = aduser.ADUser.create(username, _ou, password=password)
+            user = aduser.ADUser.create(username,
+                                        _ou,
+                                        password=password,
+                                        optional_attributes={"givenName": name,
+                                                             "sn": surname,
+                                                             "displayName": f"{name} {surname}",
+                                                             "mail": mail,
+                                                             "sAMAccountName": username,
+                                                             "title": job_title,
+                                                            }
+                                        )
             for group_dn in group_dns:
                 group = adgroup.from_dn(group_dn)
-                group.add_member(user)
-                
+                group.add_member(user)                
         except Exception as e:
             _error_code = str(e).split(": ", 1)[0]
             e = re.sub(r'^[^:]+:\s*', '', str(e))

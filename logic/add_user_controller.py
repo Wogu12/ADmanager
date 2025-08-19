@@ -65,8 +65,8 @@ class AddUserController:
     # def get_groups(self):
     #     return self.user_manager.get_all_groups()
 
-    def create_user(self, username, password, ou_dn, group_dns):
-        return self.new_user_manager.create_user(username, password, ou_dn, group_dns)
+    def create_user(self, name, surname, job_title, mail, username, password, ou_dn, group_dns):
+        return self.new_user_manager.create_user(name, surname, job_title, mail, username, password, ou_dn, group_dns)
 
 
 

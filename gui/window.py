@@ -127,6 +127,7 @@
 import customtkinter as ctk
 from gui.button_menu import ButtonMenu
 from logic.add_user_controller import AddUserController
+from CTkMessagebox import CTkMessagebox
 
 
 class Window(ctk.CTk):
@@ -152,14 +153,19 @@ class Window(ctk.CTk):
         self.content_frame.grid_columnconfigure(0, weight=1)
         self.content_frame.grid_rowconfigure(0, weight=1)
 
-        self.controller = AddUserController(self.content_frame)
+        try:
+            self.controller = AddUserController(self.content_frame)
+        except Exception as e:
+            self.controller = None
+            CTkMessagebox(title="UWAGA", message='Brak połączenia z serwerem Active Directory! Aby móc kontynuować przywróć połączenie z serwerem i zrestartuj aplikację.')
 
         self._create_widgets()
         self.protocol("WM_DELETE_WINDOW", self._on_close)
 
     def _create_widgets(self):
-        self.menu = ButtonMenu(self.menu_frame, self.controller)
-        self.menu.grid(row=0, column=0, sticky="nsew")
+        if self.controller is not None:
+            self.menu = ButtonMenu(self.menu_frame, self.controller)
+            self.menu.grid(row=0, column=0, sticky="nsew")
 
     def _on_close(self):
         self.logger.info("App shutting down.")
