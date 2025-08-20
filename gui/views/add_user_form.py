@@ -3,7 +3,6 @@ import customtkinter as ctk
 import string
 from CTkMessagebox import CTkMessagebox
 from CTkListbox import *
-from utils.multiselect_dropdown import MultiselectDropdown
 
 
 class AddUserForm(BaseForm):
@@ -12,6 +11,7 @@ class AddUserForm(BaseForm):
 
         self._controller = controller
         self._ous = self._controller.get_organizational_units()
+        self._groups = self._controller.get_groups()
 
         label = ctk.CTkLabel(self, text="Add New User", font=("Arial", 16))
         label.grid(row=0, column=0, columnspan=3, pady=10, sticky='ew')
@@ -38,7 +38,7 @@ class AddUserForm(BaseForm):
 
         ctk.CTkLabel(self, text="Hasło:").grid(row=6, column=0, sticky="w", padx=(20, 5), pady=5)
         self.entry_passwd = ctk.CTkEntry(self, show='*')
-        self.entry_passwd.grid(row=6, column=1, sticky="ew", padx=(5, 10), pady=5)
+        self.entry_passwd.grid(row=6, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
         ctk.CTkLabel(self, text="Powtórz hasło:").grid(row=7, column=0, sticky="w", padx=(20, 0), pady=5)
         self.entry_repeat = ctk.CTkEntry(self, show='*')
@@ -48,15 +48,11 @@ class AddUserForm(BaseForm):
         self.dropdown_ou = ctk.CTkOptionMenu(self, values=self._ous)
         self.dropdown_ou.grid(row=8, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        # ctk.CTkLabel(self, text="Grupy:").grid(row=9, column=0, sticky="w", padx=(20, 5), pady=5)
-        # self.dropdown_group = ctk.CTkOptionMenu(self, values=["test1", "Administratorzy", "Goście"])
-        # self.dropdown_group.grid(row=9, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
-
         ctk.CTkLabel(self, text="Grupy:").grid(row=9, column=0, sticky="w", padx=(20, 5), pady=5)
         self.entry_groups = ctk.CTkEntry(self)
         self.entry_groups.grid(row=9, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        self.combobox_groups = ctk.CTkOptionMenu(self, values=["test1", "Administratorzy", "Goście", "test1", "test2", "test3", "test4", "test5"])
+        self.combobox_groups = ctk.CTkOptionMenu(self, values=self._groups)
         self.combobox_groups.grid(row=11, column=1, sticky="ew", padx=(5, 10), pady=5)
 
         self.add_group_btn = ctk.CTkButton(self, text="Dodaj", command=self._add_group)
@@ -93,8 +89,8 @@ class AddUserForm(BaseForm):
             _username = self.entry_login.get()
             _passwd = self.entry_passwd.get()
             _ou = self.dropdown_ou.get()
-            group_dns = []  # placeholder
-            if self._controller.create_user(_name, _surname, _job_title, _mail, _username, _passwd, _ou, group_dns) is not None:
+            _groups = self.entry_groups.get()
+            if self._controller.create_user(_name, _surname, _job_title, _mail, _username, _passwd, _ou, _groups) is not None:
                 CTkMessagebox(title="Błąd", message='Nowy użytkownik został pomyślnie dodany')
             else: 
                 print('')#dodac obsluge wyjatkow 
