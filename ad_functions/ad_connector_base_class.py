@@ -6,6 +6,7 @@ class AdConnectorBaseClass:
     def __init__(self):
         self.raw_ous_list = self._get_ous()
         self.raw_groups_list = self._get_groups()
+        self.users_dict = self._get_users_dict()
 
     def _get_ous(self):
         _ous = []
@@ -34,12 +35,27 @@ class AdConnectorBaseClass:
                 _groups.append(row["distinguishedName"])
 
         return _groups
+    
+    def _get_users_dict(self):
+        _users = {}
+        query = adquery.ADQuery()
+        query.execute_query(
+            attributes=["distinguishedName", "givenName", "sn"],
+            where_clause="objectCategory='person'"
+        )
+
+        for row in query.get_results():
+            if ',CN=Users,' not in row["distinguishedName"]:
+                _full_name = f'{row["givenName"]} {row["sn"]}'
+                _users[row["distinguishedName"]] = _full_name
+
+        return _users
 
 
 def main():
     print('test')
     test = AdConnectorBaseClass()
-    ous = test.get_groups()
+    ous = test._get_users_dict()
     print(ous)
 
 
