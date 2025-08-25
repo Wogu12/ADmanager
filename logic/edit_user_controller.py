@@ -11,7 +11,13 @@ class EditUserController:
         form.grid(row=0, column=0, sticky="nsew")
 
     def get_names(self):
-        return list(self.edit_user_manager.users_dict.values())
+        return self.edit_user_manager.users_dict
+    
+    def get_user_info(self, cn):
+        return self.edit_user_manager.get_user_info(cn)
+    
+    def returned_user_data(self):
+        return self.edit_user_manager.user_data
 
     # def get_organizational_units(self):
     #     return self.edit_user_manager.ous_list

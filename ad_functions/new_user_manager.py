@@ -12,6 +12,7 @@ class NewUserManager(AdConnectorBaseClass):
         self.ous_dict = self.get_dict(self.raw_ous_list)
         self.groups_list = self.get_list(self.raw_groups_list)
         self.groups_dict = self.get_dict(self.raw_groups_list)
+        self.mapped_ous = self.get_mapped_dict(self.raw_ous_list)
 
     def get_list(self, raw_list):
         _list = []
@@ -31,9 +32,17 @@ class NewUserManager(AdConnectorBaseClass):
             _dict[_value] = item
 
         return _dict
+    
+    def get_mapped_dict(self, raw_list):
+        _dict = {}
+        for item in raw_list:
+            parts = [entry.replace("OU=", "") for entry in item.split(",") if entry.startswith("OU=")]
+            label = "/".join(reversed(parts))
+            _dict[label] = item
+        return _dict
 
     def create_user(self, name, surname, job_title, mail, username, password, ou, groups):
-        _full_ou = self.ous_dict.get(ou, None)
+        _full_ou = self.mapped_ous.get(ou, None)
         _ou = ADContainer.from_dn(_full_ou)
         user = None
         _given_groups_list = [g.strip() for g in groups.split(",") if g.strip()]
@@ -73,7 +82,7 @@ class NewUserManager(AdConnectorBaseClass):
 def main():
     print('test')
     test = NewUserManager()
-    ous = test.ous_dict
+    ous = test.mapped_ous
     print(ous)
 
     

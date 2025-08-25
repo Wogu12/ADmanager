@@ -11,7 +11,7 @@ class AddUserController:
         form.grid(row=0, column=0, sticky="nsew")
 
     def get_organizational_units(self):
-        return self.new_user_manager.ous_list
+        return list(self.new_user_manager.mapped_ous.keys())
   
     def get_groups(self):
         return self.new_user_manager.groups_list

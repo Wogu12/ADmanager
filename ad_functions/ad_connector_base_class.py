@@ -55,7 +55,7 @@ class AdConnectorBaseClass:
 def main():
     print('test')
     test = AdConnectorBaseClass()
-    ous = test._get_users_dict()
+    ous = test._map_ous()
     print(ous)
 
 
