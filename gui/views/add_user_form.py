@@ -16,39 +16,39 @@ class AddUserForm(BaseForm):
         label = ctk.CTkLabel(self, text="Add New User", font=("Arial", 16))
         label.grid(row=0, column=0, columnspan=3, pady=10, sticky='ew')
 
-        ctk.CTkLabel(self, text="Imię:").grid(row=1, column=0, sticky="w", padx=(20, 5), pady=5)
+        ctk.CTkLabel(self, text="Imię:").grid(row=1, column=0, sticky="w", padx=(10, 5), pady=5)
         self.entry_name = ctk.CTkEntry(self)
         self.entry_name.grid(row=1, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        ctk.CTkLabel(self, text="Nazwisko:").grid(row=2, column=0, sticky="w", padx=(20, 5), pady=5)
+        ctk.CTkLabel(self, text="Nazwisko:").grid(row=2, column=0, sticky="w", padx=(10, 5), pady=5)
         self.entry_surname = ctk.CTkEntry(self)
         self.entry_surname.grid(row=2, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        ctk.CTkLabel(self, text="Stanowisko:").grid(row=3, column=0, sticky="w", padx=(20, 5), pady=5)
+        ctk.CTkLabel(self, text="Stanowisko:").grid(row=3, column=0, sticky="w", padx=(10, 5), pady=5)
         self.entry_job_title = ctk.CTkEntry(self)
         self.entry_job_title.grid(row=3, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        ctk.CTkLabel(self, text="E-mail:").grid(row=4, column=0, sticky="w", padx=(20, 5), pady=5)
+        ctk.CTkLabel(self, text="E-mail:").grid(row=4, column=0, sticky="w", padx=(10, 5), pady=5)
         self.entry_mail = ctk.CTkEntry(self)
         self.entry_mail.grid(row=4, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        ctk.CTkLabel(self, text="Login:").grid(row=5, column=0, sticky="w", padx=(20, 5), pady=5)
+        ctk.CTkLabel(self, text="Login:").grid(row=5, column=0, sticky="w", padx=(10, 5), pady=5)
         self.entry_login = ctk.CTkEntry(self)
         self.entry_login.grid(row=5, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        ctk.CTkLabel(self, text="Hasło:").grid(row=6, column=0, sticky="w", padx=(20, 5), pady=5)
+        ctk.CTkLabel(self, text="Hasło:").grid(row=6, column=0, sticky="w", padx=(10, 5), pady=5)
         self.entry_passwd = ctk.CTkEntry(self, show='*')
         self.entry_passwd.grid(row=6, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        ctk.CTkLabel(self, text="Powtórz hasło:").grid(row=7, column=0, sticky="w", padx=(20, 0), pady=5)
+        ctk.CTkLabel(self, text="Powtórz hasło:").grid(row=7, column=0, sticky="w", padx=(10, 0), pady=5)
         self.entry_repeat = ctk.CTkEntry(self, show='*')
         self.entry_repeat.grid(row=7, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        ctk.CTkLabel(self, text="Dział:").grid(row=8, column=0, sticky="w", padx=(20, 5), pady=5)
+        ctk.CTkLabel(self, text="Dział:").grid(row=8, column=0, sticky="w", padx=(10, 5), pady=5)
         self.dropdown_ou = ctk.CTkOptionMenu(self, values=self._ous)
         self.dropdown_ou.grid(row=8, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        ctk.CTkLabel(self, text="Grupy:").grid(row=9, column=0, sticky="w", padx=(20, 5), pady=5)
+        ctk.CTkLabel(self, text="Grupy:").grid(row=9, column=0, sticky="w", padx=(10, 5), pady=5)
         self.entry_groups = ctk.CTkEntry(self)
         self.entry_groups.grid(row=9, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 

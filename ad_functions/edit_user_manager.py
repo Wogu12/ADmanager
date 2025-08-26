@@ -17,7 +17,7 @@ class EditUserManager(AdConnectorBaseClass):
         _user = {}
         query = adquery.ADQuery()
         query.execute_query(
-            attributes=["sn", "givenName", "title", "mail"],
+            attributes=["sn", "givenName", "title", "mail", 'sAMAccountName'],
             where_clause=f"distinguishedName = '{cn[0]}'"
         )
 
@@ -29,6 +29,7 @@ class EditUserManager(AdConnectorBaseClass):
             _user['job_title'] = row['title']
             # print(_user['job_title'])
             _user['mail'] = row['mail']
+            _user['login'] = row['sAMAccountName']
             # print(_user['mail'])
             # if 'Builtin' not in row["distinguishedName"] and ',CN=Users,' not in row["distinguishedName"]:
                 # _groups.append(row["distinguishedName"])

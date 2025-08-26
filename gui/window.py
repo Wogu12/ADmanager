@@ -11,7 +11,7 @@ class Window(ctk.CTk):
         self.logger = logger
         self.logger.info("Initialize main window.")
         self.title("AD Manager")
-        self.geometry("620x500")
+        self.geometry("720x800")
         self.minsize(620, 300)
 
         self.grid_rowconfigure(0, weight=1)
