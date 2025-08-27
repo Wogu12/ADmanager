@@ -10,15 +10,29 @@ class EditUserController:
         form = EditUserForm(self, self.parent_frame)
         form.grid(row=0, column=0, sticky="nsew")
 
+    def get_organizational_units(self):
+        return list(self.edit_user_manager.mapped_ous.keys())
+
     def get_names(self):
         return self.edit_user_manager.users_dict
     
     def get_user_info(self, cn):
         return self.edit_user_manager.get_user_info(cn)
     
+    def get_groups(self):
+        return self.edit_user_manager.groups_list
+    
     def returned_user_data(self):
         return self.edit_user_manager.user_data
 
+    def unlock_acc(self, dn):
+        return self.edit_user_manager.unlock_acc(dn)
+    
+    def enable_disable_acc(self, dn, option):
+        return self.edit_user_manager.enable_disable_acc(dn, option)
+    
+    def change_passwd(self, dn, password, change_at_logon):
+        return self.edit_user_manager.change_passwd(dn, password, change_at_logon)
     # def get_organizational_units(self):
     #     return self.edit_user_manager.ous_list
   

@@ -5,38 +5,74 @@ from pyad.adcontainer import ADContainer
 from ad_functions.ad_connector_base_class import AdConnectorBaseClass
 # from ad_connector_base_class import AdConnectorBaseClass
 from CTkMessagebox import CTkMessagebox
+import datetime
 
 class EditUserManager(AdConnectorBaseClass):
     def __init__(self):
         super().__init__()
         self.user_data = {}
+        self.groups_list = self.get_list(self.raw_groups_list)
+
+    def get_list(self, raw_list):
+        _list = []
+        for item in raw_list:
+            _value = item.split(',')[0]
+            _value = _value[3:]
+            _list.append(_value)
+
+        return _list
         
-    def get_user_info(self, cn):
-        # print('start get_user_info()')
-        # print(cn)
+    def get_user_info(self, dn):
         _user = {}
         query = adquery.ADQuery()
         query.execute_query(
             attributes=["sn", "givenName", "title", "mail", 'sAMAccountName'],
-            where_clause=f"distinguishedName = '{cn[0]}'"
+            where_clause=f"distinguishedName = '{dn[0]}'"
         )
 
         for row in query.get_results():
-            _user['name'] = row['givenName']
-            # print(_user['name'])
-            _user['surname'] = row['sn']
-            # print(_user['surname'])
-            _user['job_title'] = row['title']
-            # print(_user['job_title'])
-            _user['mail'] = row['mail']
-            _user['login'] = row['sAMAccountName']
-            # print(_user['mail'])
-            # if 'Builtin' not in row["distinguishedName"] and ',CN=Users,' not in row["distinguishedName"]:
-                # _groups.append(row["distinguishedName"])
+            _user['name'] = row['givenName'] if row['givenName'] is not None else ''
+            _user['surname'] = row['sn'] if row['sn'] is not None else ''
+            _user['job_title'] = row['title'] if row['title'] is not None else ''
+            _user['mail'] = row['mail'] if row['mail'] is not None else ''
+            _user['login'] = row['sAMAccountName'] if row['sAMAccountName'] is not None else ''
                 
-        # print(_user)    
-        # print('end get_user_info()')
         self.user_data = _user
+
+        user_obj = adobject.ADObject.from_dn(dn[0])
+        attr = user_obj.get_user_account_control_settings()
+        print(attr['ACCOUNTDISABLE'])
+        self.user_data['ACCOUNTDISABLE'] = attr['ACCOUNTDISABLE']
+
+    def get_user_ou(self, dn):
+        ...
+
+    def change_passwd(self, dn, password, change_at_logon):
+        _user = aduser.ADUser.from_dn(dn[0])
+        try:
+            _user.set_password(password)
+            CTkMessagebox(title="Uwaga", message='Hasło zastało zmienione.')
+            if change_at_logon:
+                _user.force_pwd_change_on_login()
+        except Exception as e:
+            e = re.sub(r'^[^:]+:\s*', '', str(e))
+            CTkMessagebox(title="Błąd", message=e)
+
+    def unlock_acc(self, dn):
+        _user = aduser.ADUser.from_dn(dn[0])
+        _user.unlock()
+        CTkMessagebox(title="Uwaga", message='Konto zastało odblokowane.')
+
+    def enable_disable_acc(self, dn, option):
+        _user_obj = adobject.ADObject.from_dn(dn[0])
+        user_obj = adobject.ADObject.from_dn(dn[0])
+        attr = user_obj.get_user_account_control_settings()
+        if option == 'enable' and attr['ACCOUNTDISABLE']:
+            _user_obj.set_user_account_control_setting('ACCOUNTDISABLE', False)
+            CTkMessagebox(title="Uwaga", message='Konto zastało włączone.')
+        if option == 'disable' and not attr['ACCOUNTDISABLE']:
+            _user_obj.set_user_account_control_setting('ACCOUNTDISABLE', True)
+            CTkMessagebox(title="Uwaga", message='Konto zastało wyłączone.')
 
     # def get_list(self, raw_list):
     #     _list = []
@@ -98,7 +134,7 @@ class EditUserManager(AdConnectorBaseClass):
 def main():
     print('test')
     test = EditUserManager()
-    ous = test.get_user_info('CN=Jacek Gula,OU=Kadry,DC=contoso,DC=com')
+    ous = test.groups_list
     print(ous)
 
     

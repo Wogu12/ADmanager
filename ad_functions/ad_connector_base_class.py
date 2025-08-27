@@ -7,6 +7,7 @@ class AdConnectorBaseClass:
         self.raw_ous_list = self._get_ous()
         self.raw_groups_list = self._get_groups()
         self.users_dict = self._get_users_dict()
+        self.mapped_ous = self.get_mapped_dict(self.raw_ous_list)
 
     def _get_ous(self):
         _ous = []
@@ -50,6 +51,14 @@ class AdConnectorBaseClass:
                 _users[row["distinguishedName"]] = _full_name
 
         return _users
+    
+    def get_mapped_dict(self, raw_list):
+        _dict = {}
+        for item in raw_list:
+            parts = [entry.replace("OU=", "") for entry in item.split(",") if entry.startswith("OU=")]
+            label = "/".join(reversed(parts))
+            _dict[label] = item
+        return _dict
 
 
 def main():
