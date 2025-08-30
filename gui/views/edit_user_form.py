@@ -15,6 +15,13 @@ class EditUserForm(BaseForm):
         self._users = self._controller.get_names()
         self._groups = self._controller.get_groups()
         self._ous = self._controller.get_organizational_units()
+        self._data = {}
+
+        self._entry_name_value = tk.StringVar(value='')
+        self._entry_surname_value = tk.StringVar(value='')
+        self._entry_job_title_value = tk.StringVar(value='')
+        self._entry_mail_value = tk.StringVar(value='')
+        self._entry_login_value = tk.StringVar(value='')
 
         ctk.CTkLabel(self, text="Edit User", font=("Arial", 16)).grid(row=0, column=0, columnspan=3, pady=10, sticky='ew')
 
@@ -25,30 +32,43 @@ class EditUserForm(BaseForm):
         self.add_group_btn = ctk.CTkButton(self, text="Wybierz", command=self._show_user_data)
         self.add_group_btn.grid(row=1, column=2, sticky='ew', padx=10, pady=5)
 
+    def _show_user_data(self):
+        _cn = [k for k, v in self._users.items() if v == self.dropdown_user.get()]
+        self._controller.get_user_info(_cn)
+
+        self._data = self._controller.returned_user_data()
+        print(self._data)
+
+        self._entry_name_value.set(self._data.get('name'))
+        self._entry_surname_value.set(self._data.get('surname'))
+        self._entry_job_title_value.set(self._data.get('job_title'))
+        self._entry_mail_value.set(self._data.get('mail'))
+        self._entry_login_value.set(self._data.get('login'))
+
         ctk.CTkLabel(self, text="Dane podstawowe", font=("Arial", 12)).grid(row=2, column=0, columnspan=3, padx=(10, 5), pady=2, sticky='w')
 
         ctk.CTkLabel(self, text="Imię:").grid(row=3, column=0, sticky="w", padx=(10, 10), pady=2)
-        self._entry_name_value = tk.StringVar(value='')
+        # self._entry_name_value = tk.StringVar(value='')
         self.entry_name = ctk.CTkEntry(self, textvariable=self._entry_name_value)
         self.entry_name.grid(row=3, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=2)
 
         ctk.CTkLabel(self, text="Nazwisko:").grid(row=4, column=0, sticky="w", padx=(10, 5), pady=2)
-        self._entry_surname_value = tk.StringVar(value='')
+        # self._entry_surname_value = tk.StringVar(value='')
         self.entry_surname = ctk.CTkEntry(self, textvariable=self._entry_surname_value)
         self.entry_surname.grid(row=4, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=2)
 
         ctk.CTkLabel(self, text="Stanowisko:").grid(row=5, column=0, sticky="w", padx=(10, 5), pady=2)
-        self._entry_job_title_value = tk.StringVar(value='')
+        # self._entry_job_title_value = tk.StringVar(value='')
         self.entry_job_title = ctk.CTkEntry(self, textvariable=self._entry_job_title_value)
         self.entry_job_title.grid(row=5, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=2)
 
         ctk.CTkLabel(self, text="E-mail:").grid(row=6, column=0, sticky="w", padx=(10, 5), pady=2)
-        self._entry_mail_value = tk.StringVar(value='')
+        # self._entry_mail_value = tk.StringVar(value='')
         self.entry_mail = ctk.CTkEntry(self, textvariable=self._entry_mail_value)
         self.entry_mail.grid(row=6, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=2)
 
         ctk.CTkLabel(self, text="Login:").grid(row=7, column=0, sticky="w", padx=(10, 5), pady=2)
-        self._entry_login_value = tk.StringVar(value='')
+        # self._entry_login_value = tk.StringVar(value='')
         self.entry_login = ctk.CTkEntry(self, textvariable=self._entry_login_value)
         self.entry_login.grid(row=7, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=2)
 
@@ -56,38 +76,20 @@ class EditUserForm(BaseForm):
         self.dropdown_ou = ctk.CTkOptionMenu(self, values=self._ous)
         self.dropdown_ou.grid(row=8, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=2)
 
+        self.current_groups = list(self._data['groups'].values())
+
+        # Pole z aktualnymi grupami
         ctk.CTkLabel(self, text="Grupy:").grid(row=9, column=0, sticky="w", padx=(10, 5), pady=2)
-        # _entry_login_value = tk.StringVar(value=_data.get('login'))
-        self.entry_groups = ctk.CTkEntry(self)
-        self.entry_groups.grid(row=9, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=2)
+        self.group_entry = ctk.CTkEntry(self, placeholder_text="Grupy")
+        self.group_entry.insert(0, ", ".join(self.current_groups))
+        self.group_entry.grid(row=9, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=2)
 
-        # self.add_to_group = ctk.CTkButton(self, text="Dodaj do grupy")
-        # self.add_to_group.grid(row=9, column=0, columnspan=3, sticky='ew', padx=10, pady=5)
+        # Przycisk do edycji grup
+        self.edit_groups_btn = ctk.CTkButton(self, text="Edytuj grupy", command=self.open_group_popup)
+        self.edit_groups_btn.grid(row=10, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=2)
 
-        ctk.CTkLabel(self, text="Dodaj do grupy:", font=("Arial", 12)).grid(row=10, column=0, columnspan=3, padx=(10, 0), pady=2, sticky='w')
-        self.combobox_groups = ctk.CTkOptionMenu(self, values=self._groups)
-        self.combobox_groups.grid(row=10, column=1, sticky="ew", padx=(5, 10), pady=5)
-
-        self.add_group_btn = ctk.CTkButton(self, text="Dodaj")#, command=self._add_group)
-        self.add_group_btn.grid(row=10, column=2, padx=(5, 10), pady=5, sticky="ew")
-
-        self.edit_user = ctk.CTkButton(self, text="Edytuj podstawowe dane użytkownika")
+        self.edit_user = ctk.CTkButton(self, text="Edytuj podstawowe dane użytkownika", command=self.edit_user_data)
         self.edit_user.grid(row=11, column=0, columnspan=3, sticky='ew', padx=10, pady=5)
-
-                
-
-    def _show_user_data(self):
-        _cn = [k for k, v in self._users.items() if v == self.dropdown_user.get()]
-        self._controller.get_user_info(_cn)
-
-        _data = self._controller.returned_user_data()
-        print(_data)
-
-        self._entry_name_value.set(_data.get('name'))
-        self._entry_surname_value.set(_data.get('surname'))
-        self._entry_job_title_value.set(_data.get('job_title'))
-        self._entry_mail_value.set(_data.get('mail'))
-        self._entry_login_value.set(_data.get('login'))
 
         ctk.CTkLabel(self, text="Zmiana hasła", font=("Arial", 12)).grid(row=12, column=0, columnspan=3, padx=(10, 5), pady=2, sticky='w')
 
@@ -107,9 +109,9 @@ class EditUserForm(BaseForm):
 
         ctk.CTkLabel(self, text="Opcje konta", font=("Arial", 12)).grid(row=17, column=0, columnspan=3, padx=(10, 5), pady=2, sticky='w')
 
-        if _data['ACCOUNTDISABLE']:
+        if self._data['ACCOUNTDISABLE']:
             self._is_disabled = tk.IntVar(value=1)
-        if not _data['ACCOUNTDISABLE']:
+        if not self._data['ACCOUNTDISABLE']:
             self._is_disabled = tk.IntVar(value=0)
         self.disable_acc = ctk.CTkCheckBox(self, text="konto użytkownika jest wyłączone", variable=self._is_disabled).grid(row=18, column=0, columnspan=3, sticky="ew", padx=(10, 0), pady=2)
 
@@ -119,6 +121,68 @@ class EditUserForm(BaseForm):
         self.change_options = ctk.CTkButton(self, text="Edytuj opcje konta", command=self._edit_options)
         self.change_options.grid(row=20, column=0, columnspan=3, sticky='ew', padx=10, pady=5)
 
+    def open_group_popup(self):
+        self.popup = ctk.CTkToplevel(self)
+        self.popup.title("Edycja grup")
+        popup_width = 300
+        popup_height = 300
+        self.popup.geometry(f"{popup_width}x{popup_height}")
+        self.popup.attributes("-topmost", True)
+        self.popup.grab_set()
+        self.popup.grid_columnconfigure(0, weight=1)
+
+        self.popup.update_idletasks()
+        main_x = self.winfo_rootx()
+        main_y = self.winfo_rooty()
+        main_width = self.winfo_width()
+        main_height = self.winfo_height()
+
+        x = main_x + (main_width // 2) - (popup_width // 2)
+        y = main_y + (main_height // 2) - (popup_height // 2)
+        self.popup.geometry(f"+{x}+{y}")
+
+        self.group_vars = {}
+
+        for i, g in enumerate(self._groups):
+            var = ctk.IntVar(value=1 if g in self.current_groups else 0)
+            chk = ctk.CTkCheckBox(self.popup, text=g, variable=var)
+            chk.grid(row=i, column=0, padx=10, pady=2, sticky="w")
+            self.group_vars[g] = var
+
+        save_btn = ctk.CTkButton(self.popup, text="Zapisz", command=self.save_groups_to_entry)
+        save_btn.grid(row=len(self._groups), column=0, pady=10, padx=10, sticky="ew")
+
+    def save_groups_to_entry(self):
+        _selected_groups = [group for group, var in self.group_vars.items() if group.get() == 1]
+
+        self.group_entry.delete(0, "end")
+        self.group_entry.insert(0, ", ".join(_selected_groups))
+
+        self.popup.destroy()
+
+    def edit_user_data(self):
+        _dn = [k for k, v in self._users.items() if v == self.dropdown_user.get()]
+        _new_name = self.entry_name.get()
+        _new_surname = self.entry_surname.get()
+        _new_job_title = self.entry_job_title.get()
+        _new_mail = self.entry_mail.get()
+        _new_ou = self.dropdown_ou.get()
+        _raw_groups = self.group_entry.get()
+        _user_groups = [group.strip() for group in _raw_groups.split(",") if group.strip()]
+
+        print(f'dn: {_dn}') #dn to change, check if new ou != old ou
+
+        _to_remove = list(set(self.current_groups) - set(_user_groups))
+        _to_add = list(set(_user_groups) - set(self.current_groups))
+
+        print("Do usunięcia:", _to_remove)
+        print("Do dodania:", _to_add)
+
+        self._controller.edit_user_data(_dn, _new_name, _new_surname, _new_job_title, _new_mail, _new_ou, _to_remove, _to_add)
+
+        
+
+        
     def _passwd_operations(self):
         _dn = [k for k, v in self._users.items() if v == self.dropdown_user.get()]
         _passwd = self.entry_passwd.get()

@@ -33,6 +33,9 @@ class EditUserController:
     
     def change_passwd(self, dn, password, change_at_logon):
         return self.edit_user_manager.change_passwd(dn, password, change_at_logon)
+    
+    def edit_user_data(self, dn, new_name, new_surname, new_job_title, new_mail, new_ou, to_remove, to_add):
+        return self.edit_user_manager.edit_user_data(dn, new_name, new_surname, new_job_title, new_mail, new_ou, to_remove, to_add)
     # def get_organizational_units(self):
     #     return self.edit_user_manager.ous_list
   

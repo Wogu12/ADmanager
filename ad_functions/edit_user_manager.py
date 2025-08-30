@@ -39,13 +39,26 @@ class EditUserManager(AdConnectorBaseClass):
                 
         self.user_data = _user
 
-        user_obj = adobject.ADObject.from_dn(dn[0])
-        attr = user_obj.get_user_account_control_settings()
-        print(attr['ACCOUNTDISABLE'])
-        self.user_data['ACCOUNTDISABLE'] = attr['ACCOUNTDISABLE']
+        _user_obj = adobject.ADObject.from_dn(dn[0])
+        _settings = _user_obj.get_user_account_control_settings()
+        self.user_data['ACCOUNTDISABLE'] = _settings['ACCOUNTDISABLE']
 
-    def get_user_ou(self, dn):
-        ...
+        _user_attributes = aduser.ADUser.from_dn(dn[0])
+        _raw_groups = _user_attributes.get_attribute("memberOf")
+        _groups_dict = {}
+        if len(_raw_groups) > 0:
+            _parsed_list = []
+            for item in _raw_groups:
+                _value = item.split(',')[0]
+                _value = _value[3:]
+                _parsed_list.append(_value)
+                _groups_dict[item] = _value
+        else:
+            self.user_data['groups'] = None
+        self.user_data['groups'] = _groups_dict         
+            
+    # def get_user_ou(self, dn):
+    #     ...
 
     def change_passwd(self, dn, password, change_at_logon):
         _user = aduser.ADUser.from_dn(dn[0])
@@ -73,6 +86,14 @@ class EditUserManager(AdConnectorBaseClass):
         if option == 'disable' and not attr['ACCOUNTDISABLE']:
             _user_obj.set_user_account_control_setting('ACCOUNTDISABLE', True)
             CTkMessagebox(title="Uwaga", message='Konto zastało wyłączone.')
+
+    def edit_user_data(self, dn, new_name, new_surname, new_job_title, new_mail, new_ou, to_remove, to_add):
+        if not not to_remove or not not to_add:
+            # method for groups edit
+            ...
+        if not not new_ou: #to change
+            #if new_ou not empty change ou of user
+            ...
 
     # def get_list(self, raw_list):
     #     _list = []
