@@ -19,6 +19,3 @@ class AddUserController:
     def create_user(self, name, surname, job_title, mail, username, password, ou_dn, groups):
         return self.new_user_manager.create_user(name, surname, job_title, mail, username, password, ou_dn, groups)
 
-
-
-

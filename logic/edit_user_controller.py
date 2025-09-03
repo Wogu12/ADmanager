@@ -36,15 +36,3 @@ class EditUserController:
     
     def edit_user_data(self, dn, new_name, new_surname, new_job_title, new_mail, new_ou, to_remove, to_add):
         return self.edit_user_manager.edit_user_data(dn, new_name, new_surname, new_job_title, new_mail, new_ou, to_remove, to_add)
-    # def get_organizational_units(self):
-    #     return self.edit_user_manager.ous_list
-  
-    # def get_groups(self):
-    #     return self.new_user_manager.groups_list
-
-    # def create_user(self, name, surname, job_title, mail, username, password, ou_dn, groups):
-    #     return self.new_user_manager.create_user(name, surname, job_title, mail, username, password, ou_dn, groups)
-
-
-
-
