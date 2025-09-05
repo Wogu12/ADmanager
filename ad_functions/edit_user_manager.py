@@ -99,9 +99,6 @@ class EditUserManager(AdConnectorBaseClass):
         if _user_old_ou != _new_ou:
             self.edit_ou(dn[0], _new_ou)
 
-        print(f'old dn: {self.get_ou(dn[0])}')
-        print(f'new dn: {self.mapped_ous[new_ou]}')
-
         CTkMessagebox(title="Uwaga", message='Dane użytkownika zostały zmienione.')
 
     def edit_basic_data(self, dn, name, surname, title, mail):
@@ -136,70 +133,6 @@ class EditUserManager(AdConnectorBaseClass):
     def edit_ou(self, dn, new_ou):
         _user_obj = adobject.ADObject.from_dn(dn)
         _user_obj.move(adgroup.ADGroup.from_dn(new_ou))
-
-    # @staticmethod
-    # def get_full_group(mapped_group):
-    #     return any(mapped_group.split(',')[0][3:] == group for group in groups_to_add)
-
-    # @staticmethod
-    # def compare_dn(old_dn, new_dn):
-    #     ...
-
-    # def get_list(self, raw_list):
-    #     _list = []
-    #     for item in raw_list:
-    #         _value = item.split(',')[0]
-    #         _value = _value[3:]
-    #         _list.append(_value)
-
-    #     return _list
-    
-    # def get_dict(self, raw_list):
-    #     _dict = {}
-
-    #     for item in raw_list:
-    #         _value = item.split(',')[0]
-    #         _value = _value[3:]
-    #         _dict[_value] = item
-
-    #     return _dict
-
-    # def create_user(self, name, surname, job_title, mail, username, password, ou, groups):
-    #     _full_ou = self.ous_dict.get(ou, None)
-    #     _ou = ADContainer.from_dn(_full_ou)
-    #     user = None
-    #     _given_groups_list = [g.strip() for g in groups.split(",") if g.strip()]
-
-    #     try:
-    #         user = aduser.ADUser.create(
-    #             username,
-    #             _ou,
-    #             password=password,
-    #             optional_attributes={
-    #                 "givenName": name,
-    #                 "sn": surname,
-    #                 "displayName": f"{name} {surname}",
-    #                 "mail": mail,
-    #                 "sAMAccountName": username,
-    #                 "title": job_title,
-    #             }
-    #         )
-            
-    #         for group in _given_groups_list:
-    #             _full_group = self.groups_dict.get(group, None)
-    #             user.add_to_group(adgroup.ADGroup.from_dn(_full_group))
-    #     except Exception as e:
-    #         print(e)
-    #         _error_code = str(e).split(": ", 1)[0]
-    #         e = re.sub(r'^[^:]+:\s*', '', str(e))
-    #         if _error_code == '0x80071392':
-    #             CTkMessagebox(title="Błąd", message=e)
-    #         else:
-    #             CTkMessagebox(title="Błąd", message=e)
-    #             _user_to_delete = aduser.ADUser(distinguished_name=f'CN={username},{str(_full_ou)}')
-    #             _user_to_delete.delete()
-
-    #     return user
 
 
 def main():
