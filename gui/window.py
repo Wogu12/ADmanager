@@ -48,6 +48,11 @@ class Window(ctk.CTk):
         self._create_widgets()
         self.protocol("WM_DELETE_WINDOW", self._on_close)
 
+        self.menu_frame.grid_rowconfigure(10, weight=1)
+        ctk.CTkLabel(self.menu_frame, text="ADManager", font=("Arial", 28)).grid(row=11, column=0, sticky='esw')
+        ctk.CTkLabel(self.menu_frame, text="By: Wojciech Guja", font=("Arial", 10)).grid(row=12, column=0, sticky='esw')
+        
+
     def _create_widgets(self):
         if self.add_user_controller is not None and self.edit_user_controller is not None and self.reports_controller is not None:
             self.button_add_new = ButtonMenu(self.menu_frame, self.add_user_controller, 'Dodaj użytkownika')

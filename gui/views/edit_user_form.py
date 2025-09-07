@@ -41,7 +41,6 @@ class EditUserForm(BaseForm):
         self._controller.get_user_info(_cn)
 
         self._data = self._controller.returned_user_data()
-        print(self._data)
 
         self._entry_name_value.set(self._data.get('name'))
         self._entry_surname_value.set(self._data.get('surname'))

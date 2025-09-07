@@ -29,7 +29,7 @@ class ReportsForm(BaseForm):
         self.chkbox_acc_expires = ctk.CTkCheckBox(self, text="Data wygaśnięcia kont.", variable=self._state_acc_expires).grid(row=3, column=0, columnspan=3, sticky="ew", padx=(self._pad_X_l, self._pad_x_r), pady=2)
 
         self._state_pwd_last_set = ctk.IntVar(value=0)
-        self.chkbox_pwd_last_set = ctk.CTkCheckBox(self, text="Data ostatniej zmiany hasła kont.", variable=self._state_pwd_last_set).grid(row=4, column=0, columnspan=3, sticky="ew", padx=(self._pad_X_l, self._pad_x_r), pady=2)
+        self.chkbox_pwd_last_set = ctk.CTkCheckBox(self, text="Data ostatniej zmiany hasła.", variable=self._state_pwd_last_set).grid(row=4, column=0, columnspan=3, sticky="ew", padx=(self._pad_X_l, self._pad_x_r), pady=2)
 
         self._state_acc_locked = ctk.IntVar(value=0)
         self.chkbox_acc_locked = ctk.CTkCheckBox(self, text="Pokaż zablokowane konta.", variable=self._state_acc_locked).grid(row=5, column=0, columnspan=3, sticky="ew", padx=(self._pad_X_l, self._pad_x_r), pady=2)
@@ -40,8 +40,11 @@ class ReportsForm(BaseForm):
         self._state_last_login = ctk.IntVar(value=0)
         self.chkbox_last_login = ctk.CTkCheckBox(self, text="Data ostaniego logowania konta.", variable=self._state_last_login).grid(row=7, column=0, columnspan=3, sticky="ew", padx=(self._pad_X_l, self._pad_x_r), pady=2)
 
+        self._state_passwd_expires = ctk.IntVar(value=0)
+        self.chkbox_passwd_expires = ctk.CTkCheckBox(self, text="Pokaż, czy hasło straciło ważność.", variable=self._state_passwd_expires).grid(row=8, column=0, columnspan=3, sticky="ew", padx=(self._pad_X_l, self._pad_x_r), pady=2)
+                                                 
         self.generate_reports = ctk.CTkButton(self, text="Generuj raport", command=self._generate_reports)
-        self.generate_reports.grid(row=8, column=0, columnspan=3, sticky='ew', padx=(self._pad_X_l, self._pad_x_r), pady=5)
+        self.generate_reports.grid(row=9, column=0, columnspan=3, sticky='ew', padx=(self._pad_X_l, self._pad_x_r), pady=5)
 
     def _generate_reports(self):
         _state_acc_expires = self._state_acc_expires.get()
@@ -49,6 +52,7 @@ class ReportsForm(BaseForm):
         _state_acc_locked = self._state_acc_locked.get()
         _state_show_disabled_acc = self._state_show_disabled_acc.get()
         _state_last_login = self._state_last_login.get()
+        _state_passwd_expires = self._state_passwd_expires.get()
         
-        self._controller.generate_report()
+        self._controller.generate_report(_state_acc_expires, _state_pwd_last_set, _state_acc_locked, _state_show_disabled_acc, _state_last_login, _state_passwd_expires)
     

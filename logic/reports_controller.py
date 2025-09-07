@@ -13,6 +13,6 @@ class RaportsController:
     def get_names(self):
         return self.reports_manager.users_dict
     
-    def generate_report(self):
-        return self.reports_manager.generate_report()
+    def generate_report(self, state_acc_expires, state_pwd_last_set, state_acc_locked, state_show_disabled_acc, state_last_login, state_passwd_expires):
+        return self.reports_manager.generate_report(state_acc_expires, state_pwd_last_set, state_acc_locked, state_show_disabled_acc, state_last_login, state_passwd_expires)
 
