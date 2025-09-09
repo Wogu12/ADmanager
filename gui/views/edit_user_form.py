@@ -27,7 +27,7 @@ class EditUserForm(BaseForm):
         self._entry_mail_value = tk.StringVar(value='')
         self._entry_login_value = tk.StringVar(value='')
 
-        ctk.CTkLabel(self, text="Edit User", font=("Arial", 24)).grid(row=0, column=0, columnspan=3, pady=10, sticky='ew')
+        ctk.CTkLabel(self, text="Edytuj użytkownika", font=("Arial", 24)).grid(row=0, column=0, columnspan=3, pady=10, sticky='ew')
 
         ctk.CTkLabel(self, text="Użytkownik:").grid(row=1, column=0, sticky="w", padx=(self._pad_X_l, self._pad_x_r), pady=5)
         self.dropdown_user = ctk.CTkOptionMenu(self, values=list(self._users.values()))

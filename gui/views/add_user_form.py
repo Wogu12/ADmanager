@@ -13,7 +13,7 @@ class AddUserForm(BaseForm):
         self._ous = self._controller.get_organizational_units()
         self._groups = self._controller.get_groups()
 
-        label = ctk.CTkLabel(self, text="Add New User", font=("Arial", 24))
+        label = ctk.CTkLabel(self, text="Dodaj nowego użytkownika", font=("Arial", 24))
         label.grid(row=0, column=0, columnspan=3, pady=10, sticky='ew')
 
         ctk.CTkLabel(self, text="Imię:").grid(row=1, column=0, sticky="w", padx=(10, 5), pady=5)

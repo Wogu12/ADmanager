@@ -49,7 +49,7 @@ class Window(ctk.CTk):
         self.protocol("WM_DELETE_WINDOW", self._on_close)
 
         self.menu_frame.grid_rowconfigure(10, weight=1)
-        ctk.CTkLabel(self.menu_frame, text="ADManager", font=("Arial", 28)).grid(row=11, column=0, sticky='esw')
+        ctk.CTkLabel(self.menu_frame, text="ADManager", font=("Arial", 28)).grid(row=11, column=0, padx=5, sticky='esw')
         ctk.CTkLabel(self.menu_frame, text="By: Wojciech Guja", font=("Arial", 10)).grid(row=12, column=0, sticky='esw')
         
 

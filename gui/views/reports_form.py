@@ -20,7 +20,7 @@ class ReportsForm(BaseForm):
 
         ctk.CTkLabel(self, text="Raporty", font=("Arial", 24)).grid(row=0, column=0, columnspan=3, pady=10, sticky='ew')
 
-        ctk.CTkLabel(self, text="Wybierz raporty", font=("Arial", 14)).grid(row=1, column=0, columnspan=3, pady=10, sticky='w')
+        ctk.CTkLabel(self, text="Wybierz pola raportów", font=("Arial", 14)).grid(row=1, column=0, columnspan=3, pady=10, sticky='w')
 
         _always_on = ctk.IntVar(value=1)
         self.chkbox_users_list = ctk.CTkCheckBox(self, text="Lista użytkowników z podstawowymi danymi.", variable=_always_on, state="disabled").grid(row=2, column=0, columnspan=3, sticky="ew", padx=(self._pad_X_l, self._pad_x_r), pady=2)
