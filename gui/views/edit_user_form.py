@@ -67,7 +67,7 @@ class EditUserForm(BaseForm):
         self.entry_mail.grid(row=6, column=1, columnspan=3, sticky="ew", padx=(self._pad_X_l, self._pad_x_r), pady=2)
 
         ctk.CTkLabel(self, text="Login:").grid(row=7, column=0, sticky="w", padx=(self._pad_X_l, self._pad_x_r), pady=2)
-        self.entry_login = ctk.CTkEntry(self, textvariable=self._entry_login_value)
+        self.entry_login = ctk.CTkEntry(self, textvariable=self._entry_login_value, state="readonly")
         self.entry_login.grid(row=7, column=1, columnspan=3, sticky="ew", padx=(self._pad_X_l, self._pad_x_r), pady=2)
 
         ctk.CTkLabel(self, text="Dział:").grid(row=8, column=0, sticky="w", padx=(self._pad_X_l, self._pad_x_r), pady=2)

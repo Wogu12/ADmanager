@@ -3,7 +3,6 @@ from pyad import *
 from pyad import aduser, adquery, adgroup, pyadutils
 from pyad.adcontainer import ADContainer
 from ad_functions.ad_connector_base_class import AdConnectorBaseClass
-# from ad_connector_base_class import AdConnectorBaseClass
 from CTkMessagebox import CTkMessagebox
 from tkinter import filedialog
 from datetime import datetime, timedelta
@@ -95,6 +94,6 @@ def main():
     print('test')
     test = ReportsManager()
 
-if __name__ == "__main__":
-    main()
-    pass
+# if __name__ == "__main__":
+#     main()
+#     pass

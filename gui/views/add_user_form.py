@@ -48,16 +48,6 @@ class AddUserForm(BaseForm):
         self.dropdown_ou = ctk.CTkOptionMenu(self, values=self._ous)
         self.dropdown_ou.grid(row=8, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
 
-        # ctk.CTkLabel(self, text="Grupy:").grid(row=9, column=0, sticky="w", padx=(10, 5), pady=5)
-        # self.entry_groups = ctk.CTkEntry(self)
-        # self.entry_groups.grid(row=9, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=5)
-
-        # self.combobox_groups = ctk.CTkOptionMenu(self, values=self._groups)
-        # self.combobox_groups.grid(row=11, column=1, sticky="ew", padx=(5, 10), pady=5)
-
-        # self.add_group_btn = ctk.CTkButton(self, text="Dodaj", command=self.open_group_popup)
-        # self.add_group_btn.grid(row=11, column=2, padx=(5, 10), pady=5, sticky="ew")
-
         ctk.CTkLabel(self, text="Grupy:").grid(row=9, column=0, sticky="w", padx=(10, 5), pady=2)
         self.group_entry = ctk.CTkEntry(self, placeholder_text="Grupy")
         self.group_entry.grid(row=9, column=1, columnspan=3, sticky="ew", padx=(5, 10), pady=2)
@@ -69,14 +59,6 @@ class AddUserForm(BaseForm):
 
         self.button_create = ctk.CTkButton(self, text="Dodaj użytkownika", command=self._create_user)
         self.button_create.grid(row=12, column=0, columnspan=3, sticky='ew', pady=15, padx=10)
-
-    # def _add_group(self):
-    #     group = self.combobox_groups.get()
-    #     if group and group not in self.selected_groups:
-    #         self.selected_groups.append(group)
-
-    #         self.entry_groups.delete(0, "end")
-    #         self.entry_groups.insert(0, ", ".join(self.selected_groups))
 
     def _valid_passwd(self):
         _passwd = self.entry_passwd.get()

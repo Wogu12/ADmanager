@@ -58,7 +58,6 @@ class NewUserManager(AdConnectorBaseClass):
                 _full_group = self.groups_dict.get(group, None)
                 user.add_to_group(adgroup.ADGroup.from_dn(_full_group))
         except Exception as e:
-            print(e)
             _error_code = str(e).split(": ", 1)[0]
             e = re.sub(r'^[^:]+:\s*', '', str(e))
             if _error_code == '0x80071392':
@@ -79,6 +78,6 @@ def main():
 
     
 
-if __name__ == "__main__":
-    # main()
-    pass
+# if __name__ == "__main__":
+#     # main()
+#     pass
